@@ -121,9 +121,24 @@ body {
 .address-section .detail-label { font-size: 14px; color: #aaa; margin-bottom: 4px; }
 .address-section .detail-value-md { font-size: 20px; line-height: 1.4; }
 .signature-section { background: #111; padding: 20px 16px 24px; flex-shrink: 0; }
-.signature-box { background: #fff; border-radius: 4px; padding: 16px 20px; min-height: 70px; display: flex; align-items: center; }
-.signature-text { font-family: "Brush Script MT","Segoe Script",cursive; font-size: 32px; color: #111; letter-spacing: 2px; }
-.black-divider-section { background: #000; height: 60px; flex-shrink: 0; position: relative; overflow: hidden; }
+.signature-box {
+  background: #fff;
+  border-radius: 4px;
+  padding: 8px;
+  min-height: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.signature-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}.black-divider-section { background: #000; height: 60px; flex-shrink: 0; position: relative; overflow: hidden; }
 .black-divider-section::after { content:""; position:absolute; bottom:-30px; left:-5%; width:110%; height:60px; background:linear-gradient(180deg,#1a7a2e 0%,#25a83c 100%); border-radius:50% 50% 0 0; }
 .green-footer { background: linear-gradient(180deg,#1a7a2e 0%,#25a83c 40%,#1e8c30 100%); padding: 28px 20px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; padding-bottom: max(env(safe-area-inset-bottom),32px); }
 .card-number-label { font-size: 14px; color: rgba(255,255,255,.8); margin-bottom: 4px; }
@@ -262,7 +277,7 @@ body {
   <div class="divider"></div>
   <div class="dob-section">
     <p class="detail-label">Date of birth</p>
-    <p class="detail-value-md">14 Jun 2005</p>
+    <p class="detail-value-md">14 Jun 2006</p>
   </div>
   <div class="divider"></div>
   <div class="bottom-grid">
@@ -280,9 +295,9 @@ body {
     <p class="detail-label">Address</p>
     <p class="detail-value-md">UNIT 435,<br>1 SEA RAY CL,<br>CHISWICK NSW 2046</p>
   </div>
-  <div class="signature-section">
-    <div class="signature-box"><img src= "sig.png"></div>
-  </div>
+  <div class="signature-box">
+  <img src="sig.png" alt="Signature" class="signature-img">
+</div>
   <div class="black-divider-section"></div>
   <div class="green-footer">
     <div>
