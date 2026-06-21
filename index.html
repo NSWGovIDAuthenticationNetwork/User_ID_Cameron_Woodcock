@@ -405,6 +405,7 @@ if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 <!-- Swipe down to reload - only on licence screen -->
 <!-- Swipe down to "refresh" licence screen only -->
 <!-- Swipe down to refresh licence screen -->
+<!-- Swipe down refresh - only on licence screen -->
 <script>
 let touchStartY = 0;
 const licenceScreen = document.getElementById('licenceScreen');
@@ -419,31 +420,33 @@ licenceScreen.addEventListener('touchend', function(e) {
   const touchEndY = e.changedTouches[0].screenY;
   const pullDistance = touchEndY - touchStartY;
 
-  if (pullDistance > 120 && licenceScreen.scrollTop <= 5) {
-    refreshLicenceScreen();
+  if (pullDistance > 130 && licenceScreen.scrollTop <= 5) {
+    triggerRefreshAnimation();
   }
 }, { passive: true });
 
-// Main refresh function
-function refreshLicenceScreen() {
+// Exact same animation as initial load + spinner
+function triggerRefreshAnimation() {
   // Show spinner
   refreshSpinner.style.display = 'block';
-  refreshBlock.style.opacity = '0.4';
+  refreshBlock.style.opacity = '0.35';
 
-  // Simulate network refresh delay
+  // Simulate slight delay
   setTimeout(() => {
-    // Re-trigger the exact same animation as on first load
+    // Reset and re-trigger animation exactly like on page load
     refreshBlock.classList.remove('animate');
-    void refreshBlock.offsetWidth; // Force reflow
+    void refreshBlock.offsetWidth;           // Force reflow
     refreshBlock.classList.add('animate');
 
-    // Update time
+    // Update date/time
     updateTime();
 
     // Hide spinner and restore
-    refreshSpinner.style.display = 'none';
-    refreshBlock.style.opacity = '1';
-  }, 800);
+    setTimeout(() => {
+      refreshSpinner.style.display = 'none';
+      refreshBlock.style.opacity = '1';
+    }, 400);
+  }, 650);
 }
 </script>
 </body>
