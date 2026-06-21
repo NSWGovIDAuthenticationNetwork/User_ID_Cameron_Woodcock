@@ -380,9 +380,11 @@ updateTime(); setInterval(updateTime,1000);
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 </script>
 <!-- Swipe down to reload - only on licence screen -->
+<!-- Swipe down to "refresh" licence screen only -->
 <script>
 let touchStartY = 0;
 const licenceScreen = document.getElementById('licenceScreen');
+const refreshBlock = document.getElementById('refreshBlock');
 
 licenceScreen.addEventListener('touchstart', function(e) {
   touchStartY = e.changedTouches[0].screenY;
@@ -391,11 +393,32 @@ licenceScreen.addEventListener('touchstart', function(e) {
 licenceScreen.addEventListener('touchend', function(e) {
   const touchEndY = e.changedTouches[0].screenY;
   const pullDistance = touchEndY - touchStartY;
-  
+
+  // Only trigger if pulled down more than 120px at the very top of the licence screen
   if (pullDistance > 120 && licenceScreen.scrollTop <= 5) {
-    location.reload();
+    refreshLicenceScreen();
   }
 }, { passive: true });
+
+// Function to simulate refresh (without going back to PIN)
+function refreshLicenceScreen() {
+  // Show loading spinner effect
+  refreshBlock.style.opacity = "0.3";
+  
+  // Simulate loading delay
+  setTimeout(() => {
+    // Re-trigger the refreshed animation
+    refreshBlock.classList.remove('animate');
+    void refreshBlock.offsetWidth; // Force reflow
+    refreshBlock.classList.add('animate');
+    
+    // Update the date and time
+    updateTime();
+    
+    // Restore normal opacity
+    refreshBlock.style.opacity = "1";
+  }, 600); // 600ms feels natural
+}
 </script>
 </body>
 </html>
