@@ -136,6 +136,24 @@ body {
   -webkit-user-select: none;
   user-select: none;
 }
+  /* Force card number as plain text - no link styling */
+.card-number-value {
+  -webkit-user-select: none;
+  user-select: none;
+  color: #fff !important;
+  text-decoration: none !important;
+  pointer-events: none;
+}
+  @keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Optional: Make sure no phone link styles apply */
+a, .card-number-value * {
+  color: inherit;
+  text-decoration: none;
+}
 
 .signature-img {
   width: 100%;
@@ -265,6 +283,11 @@ body {
       <span class="refresh-label">Refreshed</span>
       <span class="refresh-date" id="refreshDate"></span>
     </div>
+    <div id="refreshSpinner" style="display:none; position:absolute; top:80px; right:30px; width:24px; height:24px;">
+  <svg width="24" height="24" viewBox="0 0 24 24" style="animation: spin 1s linear infinite;">
+    <circle cx="12" cy="12" r="10" fill="none" stroke="#25a83c" stroke-width="3" stroke-dasharray="60" stroke-dashoffset="15"/>
+  </svg>
+</div>
   </div>
   <div class="name-section"><div class="licence-name">Cameron Logan WOODCOCK</div></div>
   <div class="divider"></div>
@@ -381,10 +404,12 @@ if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 </script>
 <!-- Swipe down to reload - only on licence screen -->
 <!-- Swipe down to "refresh" licence screen only -->
+<!-- Swipe down to refresh licence screen -->
 <script>
 let touchStartY = 0;
 const licenceScreen = document.getElementById('licenceScreen');
 const refreshBlock = document.getElementById('refreshBlock');
+const refreshSpinner = document.getElementById('refreshSpinner');
 
 licenceScreen.addEventListener('touchstart', function(e) {
   touchStartY = e.changedTouches[0].screenY;
@@ -394,30 +419,31 @@ licenceScreen.addEventListener('touchend', function(e) {
   const touchEndY = e.changedTouches[0].screenY;
   const pullDistance = touchEndY - touchStartY;
 
-  // Only trigger if pulled down more than 120px at the very top of the licence screen
   if (pullDistance > 120 && licenceScreen.scrollTop <= 5) {
     refreshLicenceScreen();
   }
 }, { passive: true });
 
-// Function to simulate refresh (without going back to PIN)
+// Main refresh function
 function refreshLicenceScreen() {
-  // Show loading spinner effect
-  refreshBlock.style.opacity = "0.3";
-  
-  // Simulate loading delay
+  // Show spinner
+  refreshSpinner.style.display = 'block';
+  refreshBlock.style.opacity = '0.4';
+
+  // Simulate network refresh delay
   setTimeout(() => {
-    // Re-trigger the refreshed animation
+    // Re-trigger the exact same animation as on first load
     refreshBlock.classList.remove('animate');
     void refreshBlock.offsetWidth; // Force reflow
     refreshBlock.classList.add('animate');
-    
-    // Update the date and time
+
+    // Update time
     updateTime();
-    
-    // Restore normal opacity
-    refreshBlock.style.opacity = "1";
-  }, 600); // 600ms feels natural
+
+    // Hide spinner and restore
+    refreshSpinner.style.display = 'none';
+    refreshBlock.style.opacity = '1';
+  }, 800);
 }
 </script>
 </body>
