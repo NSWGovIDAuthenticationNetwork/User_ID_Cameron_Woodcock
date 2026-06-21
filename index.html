@@ -132,6 +132,10 @@ body {
   justify-content: center;
   overflow: hidden;
 }
+.card-number-value, .detail-value-md {
+  -webkit-user-select: none;
+  user-select: none;
+}
 
 .signature-img {
   width: 100%;
@@ -374,6 +378,24 @@ function updateTime() {
 }
 updateTime(); setInterval(updateTime,1000);
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+</script>
+<!-- Swipe down to reload - only on licence screen -->
+<script>
+let touchStartY = 0;
+const licenceScreen = document.getElementById('licenceScreen');
+
+licenceScreen.addEventListener('touchstart', function(e) {
+  touchStartY = e.changedTouches[0].screenY;
+}, { passive: true });
+
+licenceScreen.addEventListener('touchend', function(e) {
+  const touchEndY = e.changedTouches[0].screenY;
+  const pullDistance = touchEndY - touchStartY;
+  
+  if (pullDistance > 120 && licenceScreen.scrollTop <= 5) {
+    location.reload();
+  }
+}, { passive: true });
 </script>
 </body>
 </html>
